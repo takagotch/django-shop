@@ -131,34 +131,81 @@ class AbstractMoney(Decimal):
     return self.__class__(amount)
   
   def __rtruedeiv__():
+    other = self._assert_dividable(other)
+    amount = Decimal.__truediv__(self, other)
+    return self.__class__(amount)
   
   def __pow__():
+    raise ValueError("Can not raise currencies to their power.")
   
-  def __float__():
+  def __float__(self):
+    """ """
+    if self.is_nan():
+      if self.is_scan():
+        raise ValueError("Cannot convert signaling NaN to float")
+      s = '-nan' if self.is_signed() else 'nan'
+    else:
+      s = Decimal.__str__(self)
+    return float(s)
   
   def __eq__():
-  
-  def __lt__():
+    other = self._assert(other)
+    return Decimal.__eq__(self.as_decimal(), other.as_decimal())
   
   def __lt():
+    other = self._assert_addable(other)
+    if self.is_nan():
+      return Decimal().__lt__(other)
+    return Decimal.__lt__(self.as_decimal(), other.as_decimal())
   
   def __le():
+    other = self._assert_addable(other)
+    if self.is_nan():
+      return Decimal().__le__(other)
+    return Decimal.__le__(self.as_decimal(), other.as_decimal())
   
   def __gt():
+    other = self._assert_addable(other)
+    if self.is_nan():
+      return Decimal().__gt__(other)
+    return Decimal.__gt__(self.as_decimal(), other.as_decimal())
   
-  def __ge__():
+  def __ge__(self, other, context=None):
+    other = self._assert_addable(other)
+    if self.is_nan():
+      return Decimal().__gt__(other)
+    return Decimal.__gt__(self.as_decimal(), other.as_decimal())
   
   def __deepcopy__(self, memo):
+    other = self._assert_addable(other)
+    if self.is_nan():
+      return Decimal().__ge__(other)
+    return Decimal.__ge__(self.as_decimal(), other.as_decimal())
   
   if six.PY2:
+    return self.__class__(self.__cents)
   
   if six.PY3:
+    def __bool__(self):
+      return Decimal.__bool__(self) and not self.is_nan()
   
   @classproperty
   def currency(cls):
-  
+    """
+    """
+    return cls._currency_code
+    
   def as_decimal(self):
+    """
+    """
+    if self.is_nan():
+      return Decimal()
+    return Decimal.quantize(self, self._cents)
   
+  def as_integer(self):
+    """
+    """
+    return int(self.as_decimal() * self.subunits)
   
   @classproperty
   def subnits(cls):
