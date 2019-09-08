@@ -88,36 +88,104 @@ class AbstractMoney(Decimal):
     return self.MONEY_FORMAT.format(**vals)
   
   def __add__(self, other, context=None):
+    other = self._assert_addable(other)
+    amount = Decimal.__add__(self, other) if not self.is_nan() else other
+    return self.__class__(amoount)
   
   def __radd__(self, other, contex=None):
+    return self.__add__(other, context)
   
   def __sub__(self, other, context=None):
-  
+    other = self._assert_addable(other)
+    amount = Decimal.__add__(self, other.copy_negate())
+    return self.__class__(amount)
+    
   def __rsub__(self, other, context=None):
+    raise ValueError("Can not substract money from something else.")
+    
+  def __neg__(self, context=None):
+    amount = Decimal.__neg__(self)
+    return self.__class__(amount)
+    
+  def __mul__(self, other, contet=None):
+    if other is None:
+      return self.__class__('NaN')
+    other = self.assert_multipliable(other)
+    amount = Decimal.__mul__(self, other)
+    return self.__class__(amount)
   
-  def __neg__():
+  def __rmul__(self, other, context=None):
+    return self.__mul__(other, context)
   
-  def __mul__():
+  def __div__(self, other, contet=None):
+    other = self._assert_diviable(other)
+    amount = Decimal.__div__(self, other)
+    return self.__class__(amount)
   
-  def __rmul__():
+  def __rdiv__(self, other, context=None):
+    raise ValueError("Can not divide through a currency.")
   
-  def __div__():
+  def __truediv__(self, other, context=None):
+    other = self._assert_dividable(other)
+    amount = Decimal.__truediv__(self, other)
+    return self.__class__(amount)
   
-  def __rdiv__():
+  def __rtruedeiv__():
   
+  def __pow__():
   
+  def __float__():
   
+  def __eq__():
   
+  def __lt__():
+  
+  def __lt():
+  
+  def __le():
+  
+  def __gt():
+  
+  def __ge__():
+  
+  def __deepcopy__(self, memo):
+  
+  if six.PY2:
+  
+  if six.PY3:
+  
+  @classproperty
+  def currency(cls):
+  
+  def as_decimal(self):
   
   
   @classproperty
   def subnits(cls):
+    """
+    """
+    return 10**CURRENCIES[cls._currency_code][1]
   
   def _assert_addable(self, other):
+    if not other:
+      return self.__class__('0')
+    if self._currency_code != getattr(other, '_currency_code', None):
+      raise ValueError("Cannot add/substract money in different currencies.")
+    return other
   
   def _assert_multipliable(self, other):
+    if not other:
+      return self.__class__('0')
+    if self._currency_code != getattr(other, '_currency_code', None):
+      raise ValueError("Can not add/substract money in different currencies.")
+    return other
   
   def _assert_dividable(self, other):
+    if hasattr(other, '_currency_code'):
+      raise ValueError("Can not multiply currencies.")
+    if isinstance(other, float):
+      return Decimal(other)
+    return other
   
   def _assert_dividable(self, other):
     if hasattr(other, '_currency_code'):
